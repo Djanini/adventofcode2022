@@ -1,7 +1,7 @@
 using BenchmarkTools
 
 parse_pair(pair::Vector{SubString{String}}) = [range(parse.(Int, task)...) for task in split.(pair, "-")]
-pair_fully_contains(pair::Vector{UnitRange{Int64}}) = return pair[1] ⊆ pair[2] || pair[2] ⊆ pair[1]
+pair_fully_contains(pair::Vector{UnitRange{Int64}}) = pair[1] ⊆ pair[2] || pair[2] ⊆ pair[1]
 pair_overlaps(pair::Vector{UnitRange{Int64}}) = length(pair[1] ∩ pair[2]) != 0
 
 function solve()
