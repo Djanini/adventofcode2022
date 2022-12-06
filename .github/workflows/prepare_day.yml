@@ -1,0 +1,29 @@
+name: Prepare files for new day
+
+on:
+  schedule:
+    - cron: "0 6 1-25 12 *"
+  workflow_dispatch:
+
+jobs:
+  prepare-day:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get current day
+        run: echo "current_day=$(date +'%d' |  sed 's/^0*//')" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: 1.8.3
+      - uses: julia-actions/cache@v1
+        with:
+          cache-registries: "true"
+      - uses: julia-actions/julia-buildpkg@v1
+      - run: julia --project ./.github/scripts/prepare_day.jl ${{ env.current_day }} ${{ secrets.ADVENTOFCODE_SESSION_COOKIE }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Prepared day ${{ env.current_day }}
+          file_pattern: "data/day*.txt src/day*.jl"
+          commit_user_name: GitHub Actions Bot
+          commit_author: GitHub Actions Bot <41898282+github-actions[bot]@users.noreply.github.com>
