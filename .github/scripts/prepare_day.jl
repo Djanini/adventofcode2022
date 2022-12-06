@@ -12,7 +12,7 @@ end
 
 function prepare_input_data(d::Int, session_cookie::String)
     cookies = Dict("session" => session_cookie)
-    input_data = String(HTTP.get("https://adventofcode.com/2022/day/6/input", cookies=cookies).body)
+    input_data = String(HTTP.get("https://adventofcode.com/2022/day/$d/input", cookies=cookies).body)
     touch("./data/day$d.txt")
     open("./data/day$d.txt", "w") do file
         write(file, input_data)
