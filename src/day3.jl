@@ -1,31 +1,17 @@
 using BenchmarkTools
 
-function calculate_score(letters::Vector{Char})
-    total_val = 0
-    for ascii_val in Int16.(letters)
-        if ascii_val > 96
-            total_val += ascii_val - 96
-        else
-            total_val += ascii_val - 38
-        end
-    end
-    return total_val
-end
+get_value(letter_ord::Int) = letter_ord > 96 ? letter_ord - 96 : letter_ord - 38
+calculate_score(letters::Vector{Char}) = sum(get_value.(Int.(letters)))
 
 function solve()
-    input_string = open("./data/day3.txt", "r") do file
-        read(file, String)
+    input_lines = open("./data/day3.txt", "r") do file
+        read(file, String) |> rstrip |> split
     end
-    lines = split(rstrip(input_string), "\n")
 
-    items_in_both = Vector{Char}()
-    for line in lines
-        half = Int(length(line) / 2)
-        append!(items_in_both, intersect(line[1:half], line[half+1:end])[1])
-    end
-    groups = [lines[i:i+2] for i in 1:3:length(lines)]
-    common_items = [intersect(group...)[1] for group in groups]
+    items_in_both = input_lines .|> l -> intersect(l[1:end÷2], l[end÷2+1:end])[1]
 
+    groups = [input_lines[i:i+2] for i ∈ 1:3:length(input_lines)]
+    common_items = [intersect(group...)[1] for group ∈ groups]
 
     return calculate_score(items_in_both), calculate_score(common_items)
 end
