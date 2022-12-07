@@ -1,7 +1,7 @@
 using BenchmarkTools
 
 function solve()
-    input_file = open("./data/dayx.txt") do file
+    input_file::String = open("./data/dayx.txt") do file
         read(file, String) |> rstrip
     end
     return input_file
