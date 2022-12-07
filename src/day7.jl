@@ -14,7 +14,7 @@ function solve()
 
     cmd_functions = Dict([
         "add_size" => (paths, dirsizes, size) -> mergewith!(+, dirsizes, Dict(path => parse(Int, size) for path ∈ paths)),
-        "cd_to" => (paths, dirsizes, dir) -> push!(paths, paths[end] * dir),
+        "cd_to" => (paths, dirsizes, dir) -> push!(paths, paths[end] * "/" * dir),
         "dir_up" => (paths, dirsizes, _) -> pop!(paths)
     ])
 
@@ -30,4 +30,4 @@ function solve()
 end
 
 println(solve())
-@btime solve()
+# @btime solve()
