@@ -29,5 +29,5 @@ function solve()
     return sum(filter(s -> s ≤ 100_000, sizes_arr)), minimum(filter(s -> s ≥ dirsizes["/"] - 40_000_000, sizes_arr))
 end
 
-solve()
+println(solve())
 @btime solve()
